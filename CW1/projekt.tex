@@ -1,0 +1,57 @@
+% !TEX encoding = cp1250
+
+%\chapter{Decyzje projektowe}
+
+\chapter{Æwiczenie}
+
+\section{Eksperymenty}
+Podczas eksperymentów zmieniane by³y wartoœci parametru $\beta$ oraz punktu pocz¹tkowego. Tolerancja w ka¿dym eksperymencie by³a nastawiona na \num{0.00001}. Jest ona to¿sama z minimaln¹ d³ugoœci¹ kroku wymagan¹ do kontynuacji dzia³ania algorytmu. Funkcja $f$ posiada minimum w punkcie $x=0$, zaœ funkcja $g$ posiada dwa minima lokalne: jedno w punkcie $x_1=0, x_2=0$, a drugie w punkcie $x_1=1, x_2=-2$. Globalnym minimum jest to pierwsze.
+
+Podczas eksperymentów parametr $\beta$ by³ manipulowany w zakresie $<\num{0.01}; \num{0.3}>$, zaœ punkt pocz¹tkowy by³ manipulowany zale¿nie od postaci funkcji.
+
+\section{Wyniki}
+
+\subsection{Funkcja $f$}
+Pierwsz¹ funkcj¹ poddan¹ algorytmowi by³a funkcja $f$. Warto nadmieniæ, ¿e nie zawsze osi¹gniêcie minimum jest mo¿liwe - wynika to ze zebyt du¿ej miary parametru $\beta$ w porównaniu do odleg³oœci punktu poczatkowego od poszukiwanego minimum. Wówczas zachodzi rozbie¿noœæ algorytmu, wobec czego rozwi¹zanie zadania znalezienia minimum funkcji jest niemo¿liwe.
+
+\begin{center}
+\begin{tabular}{ |c|c|c|c| } 
+ \hline
+ $\beta$, punkt pocz¹tkowy & 1 & 3 & 10 \\
+ \hline
+ \num{0.01} & $x = \num{0.01}$, 67843 kroki & $x = \num{0.01}$, 67852 kroki & BRAK \\ 
+ \hline
+ \num{0.1} & $x = \num{0.01}$, 6779 kroków & BRAK & BRAK \\
+ \hline
+ \num{0.3} & $x = \num{-0.01}$, 2250 kroków & BRAK & BRAK \\ 
+ \hline
+\end{tabular}
+\end{center}
+
+\subsection{Funkcja $g$}
+
+W kolejnym etapie eksperymentom poddana zosta³a funkcja $g$. Jej wykres jednak cechuje siê wartoœci¹ sta³¹ w wielu punktach tworz¹cych poziom¹ p³aszczyznê, wobec czego gradient w tych miejscach wynosi zawsze 0. Metoda gradientowa zwraca wówczas najbli¿sze minimum lokalne, czyli punkt pocz¹tkowy. Dodatkowo, funkcja ma jeszcze dwa minima lokalne: w punkcie (0;0) oraz (1;-2).
+
+%\hspace{-3cm}
+\begin{center}
+\begin{tabular}{|c|c|c|c|}
+ \hline
+ $\beta$, punkt pocz¹tkowy & (1, 1) & (2, -3) & (10, 9) \\
+ \hline
+ \num{0.01} & \makecell{$x_1 = x_2 = \num{0.00}$\\ 705 kroków} & \makecell{$x_1 = \num{0.99},  x_2  = \num{-1.97}$\\ 1496 kroków} & \makecell{$x_1 = \num{10}, x_2 = 9$\\ 1 krok}\\ 
+ \hline
+ \num{0.1} & \makecell{$x_1 = x_2 = \num{0.00}$\\ 67 kroków} & \makecell{$x_1 = \num{0.98},  x_2  = \num{-1.97}$\\ 147 kroków} & \makecell{$x_1 = \num{10}, x_2 = 9$\\ 1 krok}\\
+ \hline
+ \num{0.3} & \makecell{$x_1 = x_2  = \num{0.00}$\\ 19 kroków} & \makecell{$x_1 = \num{0.98},  x_2  = \num{-1.97}$\\ 46 kroków} & \makecell{$x_1 = \num{10}, x_2 = 9$\\ 1 krok}\\ 
+ \hline
+\end{tabular}
+\end{center}
+
+\section{Wnioski}
+
+Metoda gradientowa jest skuteczn¹ metod¹ znajdowania ekstremów funkcji. Istotnym jednak jest poprawny dobór parametru $\beta$ oraz punktu pocz¹tkowego.
+
+Ten pierwszy odpowiada za d³ugoœæ skoku miêdzy kolejnymi iteracjami. Jeœli jest wiêc za wysoki, skoki równie¿ s¹ zbyt du¿e, wobec czego mo¿e dojœæ do rozbie¿noœci algorytmu, wskutek czego minimum nie zostaje znalezione - algorytm zwraca liczby o coraz wiêkszym module, a¿ przekroczy zakres zmiennej typu float.
+
+Dobór punktu pocz¹tkowego jest istotny, poniewa¿ determinuje, które minimum zostaje znalezione przez algorytm w przypadku, gdzie mamy do czynienia z funkcj¹ o wielu minimach lokalnych. Tak¹ funkcj¹ jest g.
+Metoda gradientowa opiera siê na znajdowaniu minimum poprzez szukanie pierwiastków pochodnej analizowanej funkcji, wobec czego na odcinkach funkcji o sta³ej wartoœci algorytm odnajdzie minimum lokalne w punkcie pocz¹tkowym (jeœli ten znajdowa³ siê na takim odcinku). Z definicji minimum lokalnego wynika bowiem, ¿e w otoczeniu minimum lokalnego nie mo¿e byæ punktów o wartoœci \underline{wiêkszej} ni¿ wartoœæ w potencjalnym minimum. Punkty na p³askim odcinku, lub na p³aszczyŸnie (w przypadku funkcji dwuwymiarowej) spe³niaj¹ ten warunek - zatem algorytm ,,uznaje'', ¿e zakoñczy³ swoje zadanie. Tak samo dzia³a to w ka¿dym minimum lokalnym.
