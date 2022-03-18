@@ -1,19 +1,20 @@
 # Tymon Kobylecki WSI 22L
 
+from inspect import signature
 import math
 
 def f(x):
     return x**4
 
 def df(x):
-    return 4 * x**3
+    return [4 * x[0]**3]
 
-def g(x1, x2):
-    return 1.5 - math.exp(-x1**2 - x2**2) - 0.5 * math.exp(-(x1 - 1)**2 - (x2 + 2)**2)
+def g(args):
+    return 1.5 - math.exp(-args[0]**2 - args[1]**2) - 0.5 * math.exp(-(args[0] - 1)**2 - (args[1] + 2)**2)
 
-def dg(x1, x2):
-    d1 = 2 * x1 * math.exp(-x1**2 - x2**2) + (x1 - 1) * math.exp(-(x1 - 1)**2 - (x2 + 2)**2)
-    d2 = 2 * x2 * math.exp(-x1**2 - x2**2) + (x2 + 2) * math.exp(-(x1 - 1)**2 - (x2 + 2)**2)
+def dg(args):
+    d1 = 2 * args[0] * math.exp(-args[0]**2 - args[1]**2) + (args[0] - 1) * math.exp(-(args[0] - 1)**2 - (args[1] + 2)**2)
+    d2 = 2 * args[1] * math.exp(-args[0]**2 - args[1]**2) + (args[1] + 2) * math.exp(-(args[0] - 1)**2 - (args[1] + 2)**2)
     return (d1, d2)
 
 def collect_inputs():
@@ -32,41 +33,38 @@ def collect_inputs():
     tol = float(input())
     return func, x1, x2, beta, tol
 
-def gradient(func, x1, beta, x2 = 0):
-    if func == "f":
-        d1 = df(x1)
-        x1 -= beta * d1
-        print("x = " + str(x1))
-        return x1, d1
-    elif func == "g":
-        d1 = dg(x1, x2)[0]
-        d2 = dg(x1, x2)[1]
-        x1 -= beta * d1
-        x2 -= beta * d2
-        print("x1 = " + str(x1) + ", x2 = " + str(x2) + ", y = " + str(g(x1, x2)) + ", dy = " + str(dg(x1, x2)))
-        return x1, d1, x2, d2
+def gradient(dfunc, beta, args):
+    dargs = dfunc(args)
+    for i in range(len(dargs)):
+        args[i] -= beta * dargs[i]
+        print("x" + str(i+1) + " = " + str(args[i]))
+    print("---------------")
+    return args, dargs
     
 
 if __name__ == "__main__":
     (func, x1, x2, beta, tol) = collect_inputs()
-    print(dg(1, -2))
+    if func == "f":
+        func = df
+    elif func == "g":
+        func = dg
     steps = 0
     while True:
         steps += 1
         try:
-            if func == "f":
-                (x1, d1) = gradient(func, x1, beta)
-            elif func == "g":
-                (x1, d1, x2, d2) = gradient(func, x1, beta, x2)
+            if func == df:
+                ([x1], [d1]) = gradient(func, beta, [x1])
+            elif func == dg:
+                ([x1, x2], [d1, d2]) = gradient(func, beta, [x1, x2])
             if abs(d1) <= tol:
-                if func == "f":
+                if func == df:
                     print ("Minimum found in " + str(steps) + " steps")
                     print("x = " + str(x1) + "\ny = " + str(f(x1)))
                     break
-                elif func == "g":
+                elif func == dg:
                     if abs(d2) <= tol:
                         print ("Minimum found in " + str(steps) + " steps")
-                        print("x1 = " + str(x1) + "\nx2 = " + str(x2) + "\ny = " + str(g(x2, x2)))
+                        print("x1 = " + str(x1) + "\nx2 = " + str(x2) + "\ny = " + str(g([x1, x2])))
                         break
         except OverflowError:
             print ("Overflow Error! Decrease the beta parameter or change the initial point.")
