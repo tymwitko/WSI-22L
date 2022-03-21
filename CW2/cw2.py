@@ -38,7 +38,6 @@ def height(pattern):
     return h
 
 
-
 # def genetic(pm, pc, mu):
 #     pm=0.5 # p mutacji
 #     pc=0.5 # p krzyzowania
@@ -63,31 +62,36 @@ def genetic(q, P, μ, pm, pc, tmax):
     '''
     t = 0
     orate = rate( q, P )
-    # x_a, o_a = best(P, orate)
     while True:
         R = select(P, orate, μ )
         M = cross_mut(R, pm, pc )
         orate = rate( q, M )
-        # x, o = best( M, orate)
-        # if o <= o_a:
-            # o_a = o
-            # x_a = x
         P = M
         t = t + 1
         # dodac warunek stopu!
     return P, orate
 
+def probability(P, unit):
+    if pattern in P:
+        return height(unit)/sum_goal(P)
+
+def sum_goal(P):
+    summ = 0
+    for pattern in P:
+        summ += goal_func(height(pattern), sum(pattern))
+    return summ
+
 def select(P, o, μ):
-    pass
+    weights = []
+    for i in range(len(P)):
+        weights.append(probability(P, P[i]))
+    return random.choices(P, weights, None, P-1) # TODO: jak dobierać k? Czy to element zadania?
 
 def rate(q, P):
     tab = []
     for i in P:
         tab.append(q(i))
     return tab
-
-# def best(P, o, μ):
-#     pass
 
 def cross_mut(R, pm, pc):
     pass
