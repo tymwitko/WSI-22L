@@ -85,7 +85,7 @@ def select(P, o, μ):
     weights = []
     for i in range(len(P)):
         weights.append(probability(P, P[i]))
-    return random.choices(P, weights, None, P-1) # TODO: jak dobierać k? Czy to element zadania?
+    return random.choices(P, weights, None, len(P)-1) # TODO: jak dobierać liczebność populacji po selekcji (tu len(P)-1)? Czy to element zadania?
 
 def rate(q, P):
     tab = []
@@ -94,7 +94,24 @@ def rate(q, P):
     return tab
 
 def cross_mut(R, pm, pc):
-    pass
+    temp = cross(R, pc)
+    temp = mut(temp, pm)
+
+def cross(P, pc):
+    for pattern in P:
+        if random.random() <= pc:
+            point = random.randrange(len(pattern))
+            temp = pattern[point:] #TODO: jak dobierać drugi? czy mogą się powtarzać?
+
+def mut(P, pm):
+    for pattern in P:
+        for unit in pattern:
+            if random.random() <= pm:
+                if unit == 1:
+                    unit = 0
+                else:
+                    unit = 1
+    return P
 
 if __name__ == "__main__":
     tiem = 200
