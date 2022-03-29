@@ -1,0 +1,85 @@
+iters = 50
+pop_size = 300
+pm = 0.2
+pc = 0.3
+
+0
+
+-------------
+tiem = 200
+iters = 100
+pop_size = 20
+pm = 0.2
+pc = 0.3
+
+82 x1
+0 x24
+
+-------------
+tiem = 200
+iters = 20
+pop_size = 100
+pm = 0.1
+pc = 0.2
+
+83 x3
+78 x1
+84 x2
+82 x1
+0 x18
+
+tiem = 200
+iters = 30
+pop_size = 50
+pm = 0.1
+pc = 0.2
+
+83 x1
+84 x1
+0x 23
+
+-----------
+tiem = 200
+iters = 50
+pop_size = 100
+pm = 0.6
+pc = 0.6
+
+83 x1
+0 x24
+
+----------
+tiem = 200
+iters = 50
+pop_size = 100
+pm = 0.1
+pc = 0.1
+
+82 x1
+83 x1
+84 x1
+0 x22
+
+--------
+tiem = 200
+iters = 50
+pop_size = 100
+pm = 0.2
+pc = 0.4
+
+84 x1
+82 x1
+81 x1
+78 x1
+0 x21
+
+-------
+tiem = 200
+iters = 100
+pop_size = 300
+pm = 0.2
+pc = 0.4
+
+84 x2
+81 x2
+0 x13

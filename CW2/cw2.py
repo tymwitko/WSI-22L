@@ -11,7 +11,7 @@ class EngineOffError(Exception):
     pass
 
 def goal_func(h, fuel):
-    if h >= 150: #750:
+    if h >= 750:
         return 200 - fuel
     else:
         return 0
@@ -46,21 +46,6 @@ def height(pattern):
             fuel -= 1
     return h
 
-
-# def genetic(pm, pc, mu):
-#     pm=0.5 # p mutacji
-#     pc=0.5 # p krzyzowania
-#     mu=0.5
-#     t=0
-#     P0 = inicjalizacja() # populacja poczatkowa
-#     rate( P0 )
-#     while(not end):
-#         Tt = selekcja( Pt )
-#         Ot = cross_mut( Tt )
-#         rate ( Ot )
-#         Pt + 1 = Ot
-#         t = t+1
-
 def genetic(q, μ, pm, pc, iters, length):
     '''
     q - funkcja celu
@@ -71,14 +56,24 @@ def genetic(q, μ, pm, pc, iters, length):
     '''
     t = 0
     Po = popul_init(μ, length)
-    orate = rate( q, Po )
+    # orate = rate( q, Po )
     while t < iters:
-        Re = select(Po, orate, μ )
+        Re = select(Po, μ )
         Mu = cross_mut(Re, pm, pc )
-        orate = rate( q, Mu )
+        # orate = rate( q, Mu )
         Po = Mu
         t = t + 1
-    return Po, orate, [height(i) for i in Po]
+        # print(t)
+        # print(Po)
+    # Po.sort(key=goal_func, reverse=True)
+    best = -1
+    best_pat = []
+    for pattern in Po:
+        if goal_func(height(pattern), sum(pattern)) > best:
+            best = goal_func(height(pattern), sum(pattern))
+            best_pat = pattern
+    return best_pat, best
+    # return Po, orate, [height(i) for i in Po]
 
 def probability(P, pattern):
     if pattern in P:
@@ -93,20 +88,17 @@ def sum_goal(P):
         summ += goal_func(height(pattern), sum(pattern))
     return summ
 
-def select(P, o, μ):
+def select(P, μ):
     weights = []
     sel_inds = []
     for i in range(μ):
-        weights.append(probability(P, P[i])) # po pewnym czasie same zera
+        weights.append(probability(P, P[i]))
+    if sum(weights) == 0:
+        for i in range(len(weights)):
+            weights[i] = 1
     for i in range(μ):
         sel_inds.append(random.choices(range(0,μ), weights=weights, k=1)[0])
-    print(sel_inds)
-    print(weights)
-    try:
-        return [P[i] for i in sel_inds] # liczebność populacji stała, mogą być duplikaty
-    except IndexError:
-        print("AAAAAAAAAA! " + str(len(P)), len(sel_inds))
-        print(P[99])
+    return [P[i] for i in sel_inds]
 
 def rate(q, P):
     tab = []
@@ -126,7 +118,7 @@ def cross(P, pc):
         if random.random() <= pc:
             try:
                 point = random.randrange(len(P[ind]))
-                temp = P[ind][point:] #jak jest npar to po prostu dobrać jakiegoś powtórzonego i zostawić 1 dziecko
+                temp = P[ind][point:]
                 P[ind][point:] = P[ind+1][point:]
                 P[ind+1][point:] = temp
                 crossed.append(P[ind])
@@ -137,7 +129,10 @@ def cross(P, pc):
                 crossed.append(P[ind][point:])
         else:
             crossed.append(P[ind])
-            crossed.append(P[ind+1])
+            try:
+                crossed.append(P[ind+1])
+            except IndexError:
+                pass
         ind += 2
     return crossed
 
@@ -159,11 +154,10 @@ def popul_init(μ, length):
     return Po
 
 if __name__ == "__main__":
-    tiem = 10 #200
-    h_init = 0
-    goal = 750
+    tiem = 200
     iters = 100
-    pop_size = 20
-    pm = 0.3
-    pc = 0.2
-    print(genetic(goal_func, pop_size, pm, pc, iters, tiem))
+    pop_size = 300
+    pm = 0.2
+    pc = 0.4
+    for i in range(11):
+        print(genetic(goal_func, pop_size, pm, pc, iters, tiem)[1]) 

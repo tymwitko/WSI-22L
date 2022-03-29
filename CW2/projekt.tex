@@ -1,0 +1,74 @@
+% !TEX encoding = cp1250
+
+
+\chapter{Æwiczenie}
+
+\section{Eksperymenty}
+Hiperparametrami zmienianymi podczas eksperymentów by³y:
+\begin{itemize}
+\item wielkoœæ populacji $\mu$ - w zakresie od 20 do 300
+\item liczba iteracji algorytmu - w zakresie od 20 do 100
+\item prawdopodobieñstwo krzy¿owania $p_c$ - od \num{0,1} do \num{0,6}
+\item prawdopodobieñstwo mutacji $p_m$ - od \num{0,1} do \num{0,6}
+\end{itemize}
+
+Konkretnymi zestawami wykorzystanymi podczas eksperymentów by³y:
+\begin{itemize}
+\item $H_1$: iteracje = 100, $\mu$ = 20, $p_m$ = \num{0,2}, $p_c$ = \num{0,3}
+\item $H_2$: iteracje = 20, $\mu$ = 100, $p_m$ = \num{0,1}, $p_c$ = \num{0,2}
+\item $H_3$: iteracje = 30, $\mu$ = 50, $p_m$ = \num{0,1}, $p_c$ = \num{0,2}
+\item $H_4$: iteracje = 50, $\mu$ = 100, $p_m$ = \num{0,6}, $p_c$ = \num{0,6}
+\item $H_5$: iteracje = 50, $\mu$ = 100, $p_m$ = \num{0,1}, $p_c$ = \num{0,1}
+\item $H_6$: iteracje = 50, $\mu$ = 100, $p_m$ = \num{0,2}, $p_c$ = \num{0,4}
+\item $H_7$: iteracje = 100, $\mu$ = 300, $p_m$ = \num{0,2}, $p_c$ = \num{0,4}
+\end{itemize}
+
+\section{Funkcja celu}
+Funkcja celu osi¹ga swoje maksimum wówczas, gdy rakieta osi¹ga wysokoœæ 750, lub, jeœli osi¹gniêcie dok³adnie takiej wysokoœci, nastêpna mo¿liwa wysokoœæ wy¿sza ni¿ 750.
+Wysokoœæ koñcowa mniejsza ni¿ 750 skutkuje automatycznie wartoœci¹ funkcji celu równ¹ 0.
+W pozosta³ych przypadkach wartoœæ funkcji celu jest zale¿na od iloœci zabranego paliwa, gdy¿ wówczas wynosi $200-x$, gdzie $x$ to liczba zabranych jednostek paliwa.
+
+
+\section{Wyniki}
+Z uwagi na wysok¹ liczebnoœæ wyników zerowych, œrednia wszystkich wyników nie jest szczególnie miarodajna, bowiem zale¿y g³ównie od konkretnej liczby zer w zbiorze wyników dla danego zestawu hiperparametrów.
+Z tego wzglêdu zostanie tak¿e przedstawiona œrednia wyników niezerowych oraz ich liczba.
+Ka¿dy zestaw hiperparametrów pos³u¿y³ do przeprowadzenia 25 pomiarów.
+
+\begin{center}
+\begin{tabular}{ |c|c|c|c| } 
+ \hline
+ &œrednia&œrednia niezerowych&liczba niezerowych\\
+ \hline
+$H_1$ & \num{3,28} & 82 & 1\\ 
+ \hline
+ $H_2$ & \num{23,08} & \num{82,43} & 7\\ 
+ \hline
+ $H_3$ & \num{6,68} & \num{83,5} & 2\\ 
+ \hline
+ $H_4$ & \num{3,32} & \num{83} & 1\\ 
+ \hline
+ $H_5$ & \num{9,96} & \num{83} & 3\\ 
+ \hline
+ $H_6$ & \num{13} & \num{81,25} & 4\\ 
+ \hline
+ $H_7$ & \num{13,2} & \num{82,5} & 4\\ 
+ \hline
+\end{tabular}
+\end{center}
+
+\section{Analiza wyników}
+Znaczna czêœæ wyników wynios³a 0, co wynika jednak nie tylko z uk³adu funkcji celu.
+Istotnym aspektem jest natura algorytmu genetycznego, który niekiedy potrafi ,,zgubiæ'' znalezione ju¿ rozwi¹zanie, nawet jeœli jest optymalne.
+Mo¿e ono bowiem zostaæ niewybrane podczas selekcji ruletkowej, mo¿e zostaæ pogorszone poprzez krzy¿owanie jednopunktowe, lub te¿ zmutowane do tego stopnia, ¿e funkcja celu dla takiego osobnika wynosi znów 0.
+W zwi¹zku z tym, od pewnej liczby iteracji, dalsze powiêkszanie jej nie przynosi ju¿ zauwa¿alnych efektów, a czasem mo¿e nawet pogorszyæ sytuacjê.
+Dlatego te¿ najwy¿sz¹ œredni¹ wszystkich wyników mo¿na by³o zaobserwowaæ przy liczbie iteracji równej 20 oraz liczebnoœci populacji równej 100.
+Rozmiar populacji ma jednak znaczenie, gdy¿ im wiêksza populacja, tym wiêksza szansa, ¿e trafi siê rozwi¹zanie, które nie zostanie ,,utracone'' przy krzy¿owaniu i mutacji, zwyczajnie dlatego, ¿e rozwa¿ane jest wiêcej potencjalnych rozwi¹zañ.
+
+\section{Wnioski}
+Algorytm genetyczny nie jest szczególnie skuteczny w znajdowaniu rozwi¹zania zadania przedstawionego w poleceniu.
+Ma jednak istotny potencja³ do modyfikacji.
+Zmianami, które mog³yby znacznie poprawiæ skutecznoœæ algorytmu, mog³yby byæ, na przyk³ad:
+\begin{itemize}
+\item przechwytywanie ka¿dego niezerowego wyniku i porównywanie wszystkich uzyskanych na koniec dzia³ania programu
+\item wykluczanie najlepszego osobnika w ka¿dej iteracji z krzy¿owania i mutacji
+\end{itemize}
