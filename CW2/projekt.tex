@@ -20,7 +20,8 @@ Konkretnymi zestawami wykorzystanymi podczas eksperymentów by³y:
 \item $H_4$: iteracje = 50, $\mu$ = 100, $p_m$ = \num{0,6}, $p_c$ = \num{0,6}
 \item $H_5$: iteracje = 50, $\mu$ = 100, $p_m$ = \num{0,1}, $p_c$ = \num{0,1}
 \item $H_6$: iteracje = 50, $\mu$ = 100, $p_m$ = \num{0,2}, $p_c$ = \num{0,4}
-\item $H_7$: iteracje = 100, $\mu$ = 300, $p_m$ = \num{0,2}, $p_c$ = \num{0,4}
+\item $H_7$: iteracje = 10, $\mu$ = 10, $p_m$ = \num{0,8}, $p_c$ = \num{0,8}
+\item $H_8$: iteracje = 10, $\mu$ = 10, $p_m$ = \num{0,1}, $p_c$ = \num{0,1}
 \end{itemize}
 
 \section{Funkcja celu}
@@ -35,39 +36,36 @@ Z tego wzglêdu zostanie tak¿e przedstawiona œrednia wyników niezerowych oraz ich
 Ka¿dy zestaw hiperparametrów pos³u¿y³ do przeprowadzenia 25 pomiarów.
 
 \begin{center}
-\begin{tabular}{ |c|c|c|c| } 
+\begin{tabular}{ |c|c|c|c|c|c| } 
  \hline
- &œrednia&œrednia niezerowych&liczba niezerowych\\
+ &$\mu$&liczba iteracji&$p_m$&$p_c$&œredni wynik\\
  \hline
-$H_1$ & \num{3,28} & 82 & 1\\ 
+$H_1$ & 20 & 50 & \num{0,2}&\num{0,4} & \num{105,68}\\ 
  \hline
- $H_2$ & \num{23,08} & \num{82,43} & 7\\ 
+ $H_2$ & 20 & 100 & \num{0,1}&\num{0,2} & \num{109,52}\\ 
  \hline
- $H_3$ & \num{6,68} & \num{83,5} & 2\\ 
+ $H_3$ & 30 & 50 & \num{0,1}&\num{0,2} & \num{103,04}\\ 
  \hline
- $H_4$ & \num{3,32} & \num{83} & 1\\ 
+ $H_4$ & 50 & 100 & \num{0,6}&\num{0,6} & \num{103,44}\\ 
  \hline
- $H_5$ & \num{9,96} & \num{83} & 3\\ 
+ $H_5$ & 50 & 100 & \num{0,1}&\num{0,1} & \num{103,72}\\ 
  \hline
- $H_6$ & \num{13} & \num{81,25} & 4\\ 
+ $H_6$ & 50 & 100 & \num{0,2}&\num{0,4} & \num{103,92}\\ 
  \hline
- $H_7$ & \num{13,2} & \num{82,5} & 4\\ 
+ $H_7$ & 10 & 10 & \num{0,8}&\num{0,8} & \num{103,64}\\ 
+ \hline
+ $H_8$ & 10 & 10 & \num{0,1}&\num{0,1} & \num{101,12}\\ 
  \hline
 \end{tabular}
 \end{center}
 
 \section{Analiza wyników}
-Znaczna czêœæ wyników wynios³a 0, co wynika jednak nie tylko z uk³adu funkcji celu.
-Istotnym aspektem jest natura algorytmu genetycznego, który niekiedy potrafi ,,zgubiæ'' znalezione ju¿ rozwi¹zanie, nawet jeœli jest optymalne.
-Mo¿e ono bowiem zostaæ niewybrane podczas selekcji ruletkowej, mo¿e zostaæ pogorszone poprzez krzy¿owanie jednopunktowe, lub te¿ zmutowane do tego stopnia, ¿e funkcja celu dla takiego osobnika wynosi znów 0.
-W zwi¹zku z tym, od pewnej liczby iteracji, dalsze powiêkszanie jej nie przynosi ju¿ zauwa¿alnych efektów, a czasem mo¿e nawet pogorszyæ sytuacjê.
-Dlatego te¿ najwy¿sz¹ œredni¹ wszystkich wyników mo¿na by³o zaobserwowaæ przy liczbie iteracji równej 20 oraz liczebnoœci populacji równej 100.
-Rozmiar populacji ma jednak znaczenie, gdy¿ im wiêksza populacja, tym wiêksza szansa, ¿e trafi siê rozwi¹zanie, które nie zostanie ,,utracone'' przy krzy¿owaniu i mutacji, zwyczajnie dlatego, ¿e rozwa¿ane jest wiêcej potencjalnych rozwi¹zañ.
+Œrednie wyniki nie wskazuj¹ na szczególne znaczenie któregokolwiek z parametrów, co wynika z faktu, ¿e algorytm genetyczny w takiej postaci, jak w niniejszym zadaniu, jest algorytmem opieraj¹cym siê na losowaniu wyników. Po odpowiedniej liczbie iteracji ka¿da kolejna sprawia tylko, ¿e losujemy inny zestaw danych. Dla porównania zosta³a równie¿ uruchomiona czysto losowa symulacja, której œredni wynik wyniós³ \num{109,8} po 25 próbkach. Jest to wynik porównywalny ze wszystkimi pozosta³ymi, co pokazuje, ¿e algorytm genetyczny sam w sobie nieszczególnie przynosi jak¹kolwiek wartoœæ dodan¹. Wynika to przede wszystkim z tego, ¿e w algorytmie nie ma ¿adnego systemu zapisywania najlepszych wyników, przez co dochodzi do ,,gubienia'' tych¿e rozwi¹zañ. Koñcowa populacja jest wiêc rezultatem losowych krzy¿owañ i mutacji, co sprawia, ¿e wyniki s¹ w du¿ej mierze losowe.
 
 \section{Wnioski}
-Algorytm genetyczny nie jest szczególnie skuteczny w znajdowaniu rozwi¹zania zadania przedstawionego w poleceniu.
-Ma jednak istotny potencja³ do modyfikacji.
-Zmianami, które mog³yby znacznie poprawiæ skutecznoœæ algorytmu, mog³yby byæ, na przyk³ad:
+Algorytm genetyczny spisuje siê dobrze w takim zadaniu, jednak ³atwo wyobraziæ sobie, ¿e przy zadaniach ,,trudniejszych'', czyli takich, w których mniejsza liczba kombinacji zapewnia niezerow¹ wartoœæ funkcji celu, algorytm ten mo¿e byæ zupe³nie nieskuteczny i wypluwaæ same zera.
+Wynika to z natury tego algorytmu, która sprawia, ¿e ³atwo mo¿e dojœæ do ,,zgubienia'' niezerowych rozwi¹zañ podczas krzy¿owania lub mutacji.
+Tak¹ wadê mo¿na jednak ³atwo skorygowaæ, na przyk³ad poprzez:
 \begin{itemize}
 \item przechwytywanie ka¿dego niezerowego wyniku i porównywanie wszystkich uzyskanych na koniec dzia³ania programu
 \item wykluczanie najlepszego osobnika w ka¿dej iteracji z krzy¿owania i mutacji

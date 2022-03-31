@@ -28,20 +28,22 @@ def fric_down(v, m):
 def gravity_down():
     return -0.9
 
-def d_height(fuel, engine):
+def d_height(fuel, engine, vinit):
     # zmiana wysokosci w jednostce czasu
     a_sum = acc_up(fuel, engine) + gravity_down()
-    v = a_sum * 1
+    v = vinit + a_sum
     a_sum += fric_down(v, 20 + fuel)
-    v = a_sum * 1
-    return v * 1
+    v = vinit + a_sum
+    return vinit + a_sum/2, v
     
 
 def height(pattern):
     fuel = sum(pattern)
     h = 0
+    v = 0
     for i in pattern:
-        h += d_height(fuel, i)
+        h += d_height(fuel, i, v)[0]
+        v = d_height(fuel, i, v)[1]
         if i:
             fuel -= 1
     return h
@@ -155,9 +157,9 @@ def popul_init(μ, length):
 
 if __name__ == "__main__":
     tiem = 200
-    iters = 100
-    pop_size = 300
-    pm = 0.2
-    pc = 0.4
-    for i in range(11):
+    iters = 10
+    pop_size = 10
+    pm = 0.01
+    pc = 0.01
+    for i in range(25):
         print(genetic(goal_func, pop_size, pm, pc, iters, tiem)[1]) 
