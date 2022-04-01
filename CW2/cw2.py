@@ -1,3 +1,5 @@
+# Tymon Kobylecki WSI22L
+
 from cmath import inf
 import random
 
@@ -58,21 +60,16 @@ def genetic(q, μ, pm, pc, iters, length):
     '''
     t = 0
     Po = popul_init(μ, length)
-    # orate = rate( q, Po )
     while t < iters:
         Re = select(Po, μ )
         Mu = cross_mut(Re, pm, pc )
-        # orate = rate( q, Mu )
         Po = Mu
         t = t + 1
-        # print(t)
-        # print(Po)
-    # Po.sort(key=goal_func, reverse=True)
-    best = -1
+    best = -inf
     best_pat = []
     for pattern in Po:
-        if goal_func(height(pattern), sum(pattern)) > best:
-            best = goal_func(height(pattern), sum(pattern))
+        if q(height(pattern), sum(pattern)) > best:
+            best = q(height(pattern), sum(pattern))
             best_pat = pattern
     return best_pat, best
     # return Po, orate, [height(i) for i in Po]
@@ -157,9 +154,9 @@ def popul_init(μ, length):
 
 if __name__ == "__main__":
     tiem = 200
-    iters = 10
-    pop_size = 10
-    pm = 0.01
-    pc = 0.01
+    iters = 2
+    pop_size = 500
+    pm = 0.001
+    pc = 0.001
     for i in range(25):
         print(genetic(goal_func, pop_size, pm, pc, iters, tiem)[1]) 

@@ -6,22 +6,23 @@
 \section{Eksperymenty}
 Hiperparametrami zmienianymi podczas eksperymentów by³y:
 \begin{itemize}
-\item wielkoœæ populacji $\mu$ - w zakresie od 20 do 300
-\item liczba iteracji algorytmu - w zakresie od 20 do 100
-\item prawdopodobieñstwo krzy¿owania $p_c$ - od \num{0,1} do \num{0,6}
-\item prawdopodobieñstwo mutacji $p_m$ - od \num{0,1} do \num{0,6}
+\item wielkoœæ populacji $\mu$ - w zakresie od 10 do 500
+\item liczba iteracji algorytmu - w zakresie od 2 do 10
+\item prawdopodobieñstwo krzy¿owania $p_c$ - od \num{0,0000001} do \num{0,2}
+\item prawdopodobieñstwo mutacji $p_m$ - od \num{0,0000001} do \num{0,4}
 \end{itemize}
 
 Konkretnymi zestawami wykorzystanymi podczas eksperymentów by³y:
 \begin{itemize}
-\item $H_1$: iteracje = 100, $\mu$ = 20, $p_m$ = \num{0,2}, $p_c$ = \num{0,3}
-\item $H_2$: iteracje = 20, $\mu$ = 100, $p_m$ = \num{0,1}, $p_c$ = \num{0,2}
-\item $H_3$: iteracje = 30, $\mu$ = 50, $p_m$ = \num{0,1}, $p_c$ = \num{0,2}
-\item $H_4$: iteracje = 50, $\mu$ = 100, $p_m$ = \num{0,6}, $p_c$ = \num{0,6}
-\item $H_5$: iteracje = 50, $\mu$ = 100, $p_m$ = \num{0,1}, $p_c$ = \num{0,1}
-\item $H_6$: iteracje = 50, $\mu$ = 100, $p_m$ = \num{0,2}, $p_c$ = \num{0,4}
-\item $H_7$: iteracje = 10, $\mu$ = 10, $p_m$ = \num{0,8}, $p_c$ = \num{0,8}
-\item $H_8$: iteracje = 10, $\mu$ = 10, $p_m$ = \num{0,1}, $p_c$ = \num{0,1}
+\item $H_1$: iteracje = 10, $\mu$ = 10, $p_m$ = \num{0,1}, $p_c$ = \num{0,1}
+\item $H_2$: iteracje = 10, $\mu$ = 100, $p_m$ = \num{0,1}, $p_c$ = \num{0,1}
+\item $H_3$: iteracje = 3, $\mu$ = 50, $p_m$ = \num{0,01}, $p_c$ = \num{0,01}
+\item $H_4$: iteracje = 2, $\mu$ = 50, $p_m$ = \num{0,2}, $p_c$ = \num{0,4}
+\item $H_5$: iteracje = 2, $\mu$ = 100, $p_m$ = \num{0,2}, $p_c$ = \num{0,4}
+\item $H_6$: iteracje = 5, $\mu$ = 100, $p_m$ = \num{0,001}, $p_c$ = \num{0,001}
+\item $H_7$: iteracje = 7, $\mu$ = 70, $p_m$ = \num{0,001}, $p_c$ = \num{0,001}
+\item $H_8$: iteracje = 10, $\mu$ = 100, $p_m$ = \num{0,0000001}, $p_c$ = \num{0,0000001}
+\item $H_9$: iteracje = 2, $\mu$ = 500, $p_m$ = \num{0,001}, $p_c$ = \num{0,001}
 \end{itemize}
 
 \section{Funkcja celu}
@@ -38,32 +39,34 @@ Ka¿dy zestaw hiperparametrów pos³u¿y³ do przeprowadzenia 25 pomiarów.
 \begin{center}
 \begin{tabular}{ |c|c|c|c|c|c| } 
  \hline
- &$\mu$&liczba iteracji&$p_m$&$p_c$&œredni wynik\\
+ &liczba iteracji&$\mu$&$p_m$&$p_c$&œredni wynik\\
  \hline
-$H_1$ & 20 & 50 & \num{0,2}&\num{0,4} & \num{105,68}\\ 
+$H_1$ & 10 & 10 & \num{0,1}&\num{0,1} & \num{101,12}\\ 
  \hline
- $H_2$ & 20 & 100 & \num{0,1}&\num{0,2} & \num{109,52}\\ 
+ $H_2$ & 10 & 100 & \num{0,1}&\num{0,1} & \num{110,28}\\ 
  \hline
- $H_3$ & 30 & 50 & \num{0,1}&\num{0,2} & \num{103,04}\\ 
+ $H_3$ & 3 & 50 & \num{0,01}&\num{0,01} & \num{112,52}\\ 
  \hline
- $H_4$ & 50 & 100 & \num{0,6}&\num{0,6} & \num{103,44}\\ 
+ $H_4$ & 2 & 50 & \num{0,2}&\num{0,4} & \num{112,8}\\ 
  \hline
- $H_5$ & 50 & 100 & \num{0,1}&\num{0,1} & \num{103,72}\\ 
+ $H_5$ & 2 & 100 & \num{0,2}&\num{0,4} & \num{115,8}\\ 
  \hline
- $H_6$ & 50 & 100 & \num{0,2}&\num{0,4} & \num{103,92}\\ 
+ $H_6$ & 5 & 100 & \num{0,001}&\num{0,001} & \num{113,52}\\ 
  \hline
- $H_7$ & 10 & 10 & \num{0,8}&\num{0,8} & \num{103,64}\\ 
+ $H_7$ & 7 & 70 & \num{0,001}&\num{0,001} & \num{110,92}\\ 
  \hline
- $H_8$ & 10 & 10 & \num{0,1}&\num{0,1} & \num{101,12}\\ 
+ $H_8$ & 10 & 100 & \num{0,0000001}&\num{0,0000001} & \num{110,8}\\ 
  \hline
+  $H_9$ & 2 & 500 & \num{0,001}&\num{0,001} & \num{119,52}\\ 
+  \hline
 \end{tabular}
 \end{center}
 
 \section{Analiza wyników}
-Œrednie wyniki nie wskazuj¹ na szczególne znaczenie któregokolwiek z parametrów, co wynika z faktu, ¿e algorytm genetyczny w takiej postaci, jak w niniejszym zadaniu, jest algorytmem opieraj¹cym siê na losowaniu wyników. Po odpowiedniej liczbie iteracji ka¿da kolejna sprawia tylko, ¿e losujemy inny zestaw danych. Dla porównania zosta³a równie¿ uruchomiona czysto losowa symulacja, której œredni wynik wyniós³ \num{109,8} po 25 próbkach. Jest to wynik porównywalny ze wszystkimi pozosta³ymi, co pokazuje, ¿e algorytm genetyczny sam w sobie nieszczególnie przynosi jak¹kolwiek wartoœæ dodan¹. Wynika to przede wszystkim z tego, ¿e w algorytmie nie ma ¿adnego systemu zapisywania najlepszych wyników, przez co dochodzi do ,,gubienia'' tych¿e rozwi¹zañ. Koñcowa populacja jest wiêc rezultatem losowych krzy¿owañ i mutacji, co sprawia, ¿e wyniki s¹ w du¿ej mierze losowe.
+Algorytm spisywa³ siê najlepiej przy niskiej liczbie generacji. Wyniki s¹ doœæ porównywalne, przy czym warto zauwa¿yæ, ¿e najwy¿sze œrednie zosta³y uzyskane przy najwiêkszych populacjach. Wynika to z faktu, ¿e wówczas posiadamy najwiêksz¹ pulê, z której mo¿na uzyskaæ rozwi¹zania. Przy wy¿szych liczbach iteracji wystêpowa³o zbyt du¿o krzy¿owañ i mutacji, co skutkowa³o wysok¹ losowoœci¹ otrzymanych wyników. Widoczna jest wartoœæ dodana wzglêdem zupe³nie losowej populacji, gdy¿ dla takiej wartoœæ œrednia wynios³a \num{105,84}.
 
 \section{Wnioski}
-Algorytm genetyczny spisuje siê dobrze w takim zadaniu, jednak ³atwo wyobraziæ sobie, ¿e przy zadaniach ,,trudniejszych'', czyli takich, w których mniejsza liczba kombinacji zapewnia niezerow¹ wartoœæ funkcji celu, algorytm ten mo¿e byæ zupe³nie nieskuteczny i wypluwaæ same zera.
+Algorytm genetyczny spisuje siê dobrze w takim zadaniu, jednak ³atwo wyobraziæ sobie, ¿e przy zadaniach ,,trudniejszych'', czyli takich, w których mniejsza liczba kombinacji zapewnia niezerow¹ wartoœæ funkcji celu, algorytm ten mo¿e byæ zupe³nie nieskuteczny i ,,wypluwaæ'' same zera.
 Wynika to z natury tego algorytmu, która sprawia, ¿e ³atwo mo¿e dojœæ do ,,zgubienia'' niezerowych rozwi¹zañ podczas krzy¿owania lub mutacji.
 Tak¹ wadê mo¿na jednak ³atwo skorygowaæ, na przyk³ad poprzez:
 \begin{itemize}
