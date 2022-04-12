@@ -1,6 +1,6 @@
 from two_player_games.player import Player
 import unittest
-from two_player_games.games.connect_four import ConnectFour, ConnectFourMove
+from two_player_games.games.connect_four import ConnectFour, ConnectFourMove, ConnectFourState
 
 
 class TestConnectFour(unittest.TestCase):
@@ -118,3 +118,18 @@ class TestConnectFour(unittest.TestCase):
             + "[ ][ ][a][b][b][ ][ ]\n"
             + "[ ][a][a][b][a][ ][b]")
 
+    def test_winner_final_row(self):
+        p1 = Player('1')
+        p2 = Player('2')
+
+        state = ConnectFourState(fields=[
+            [p1, p1, p1, p2, p1, p1],
+            [p1, p2, p2, p1, p2, None],
+            [p2, p1, p2, p2, None, None],
+            [p2, p2, None, None, None, None],
+            [p1, p2, p1, p2, p2, p1],
+            [p2, p2, p2, p1, p1, p1],
+            [p1, p2, p1, None, None, None]
+        ], current_player=p1)
+
+        self.assertIs(state.get_winner(), p2)

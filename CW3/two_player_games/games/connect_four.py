@@ -74,19 +74,19 @@ class ConnectFourState(State):
 
     def get_winner(self) -> Optional[Player]:
         for column_id in range(len(self.fields)):  # verticals
-            for start_row_id in range(len(self.fields[column_id]) - 4):
+            for start_row_id in range(len(self.fields[column_id]) - 3):
                 winner = self._check_four((column_id, start_row_id), (0, 1))
                 if winner:
                     return winner
         
-        for start_column_id in range(len(self.fields) - 4):  # horizontals
+        for start_column_id in range(len(self.fields) - 3):  # horizontals
             for row_id in range(len(self.fields[start_column_id])):
                 winner = self._check_four((start_column_id, row_id), (1, 0))
                 if winner:
                     return winner
 
-        for start_column_id in range(len(self.fields) - 4):  # diagonals
-            for start_row_id in range(len(self.fields[start_column_id]) - 4):
+        for start_column_id in range(len(self.fields) - 3):  # diagonals
+            for start_row_id in range(len(self.fields[start_column_id]) - 3):
                 winner =\
                     self._check_four((start_column_id, start_row_id), (1, 1))\
                     or self._check_four((start_column_id, start_row_id + 3), (1, -1))
