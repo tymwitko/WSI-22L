@@ -4,11 +4,72 @@
 \chapter{Æwiczenie}
 
 \section{Eksperymenty}
+Eksperymenty w niniejszym æwiczeniu laboratoryjnym polega³y na wielokrotnym uruchamianiu symulacji rozgrywki Connect 4, w której obydwu graczy zast¹piono botami.
+Zmienianym parametrem by³y: g³êbokoœæ przeszukiwania, manipulowana od 1 do 5 ruchów wprzód, gracz zaczynaj¹cy grê (min lub max).
 
 \section{Œrodowisko - gra Connect 4}
+Œrodowiskiem, wewn¹trz którego przebiega³a symulacja, by³a gra Connect 4.
+Jej celem jest po³¹czenie czterech ¿etonów w nieprzerwany prosty odcinek na planszy, na któr¹ oddzia³uje grawitacja.
+Ka¿dy w³o¿ony ¿eton spada wiêc na sam dó³ planszy, lub na ostatnio wrzucony do tej samej kolumny ¿eton.
 
 \section{Wyniki}
+Jako, ¿e symulacja rozgrywki gry planszowej nie dostarcza miarjodajnych danych, które mo¿na by przedstawiæ na wykresie, zaprezentowane zostan¹ jedynie statystyki zwyciêstw graczy.
+Wyniki te znajduj¹ siê w tabeli \ref{standard} dla wersji algorytmu bez obcinania oraz w tabeli \ref{obcinanie} dla wersji z obcinaniem.
+
+\begin{table}
+\begin{center}
+\begin{tabular}{ |c|c|c|c|c|c| } 
+\hline
+Zwyciêzca/g³êbokoœæ przeszukiwania &	1&	2&	3&	4&	5\\
+\hline
+max&	25&	8&	13	&11	&14\\
+\hline
+min&	0&	5&	12&	7&	11\\
+\hline
+remis&	0&	12&	0&	7&	0\\
+\hline
+\end{tabular}
+\end{center}
+\caption{Tabela wyników dla algorytmu minimax w wersji standardowej}
+\label{standard}
+\end{table}
+
+\begin{table}
+\begin{center}
+\begin{tabular}{ |c|c|c|c|c|c| } 
+\hline
+Zwyciêzca/g³êbokoœæ przeszukiwania &	1&	2&	3&	4&	5\\
+\hline
+max&	25&	10&	13&	10&	13\\
+\hline
+min&	0&	6&	11&	6&	10\\
+\hline
+remis & 0&	9&	1&	9&	2\\
+\hline
+\end{tabular}
+\end{center}
+\caption{Tabela wyników dla algorytmu minimax w wersji z obcinaniem $\alpha - \beta$}
+\label{obcinanie}
+\end{table}
 
 \section{Analiza wyników}
+Przy bardzo g³êbokim przeszukiwaniu algorytm sprawia³ wra¿enie ,,g³upszego'' - zdarza³o mu siê pope³niaæ z pozoru bardzo proste b³êdy.
+Najprawdopodobniej wynika to jednak z ,,defetyzmu'' (lub nadmiernego optymizmu) algorytmu - w momencie, gdy zauwa¿y, ¿e gra siê skoñczy niezale¿nie od jego najbli¿szego ruchu, zacznie losowaæ swój aktualny ruch.
+Wynika to z faktu, ¿e funkcja heurystyki zwraca wartoœæ $\pm5000$ niezale¿nie od g³êbokoœci, na której zostanie znalezione rozwi¹zanie.
+W zwi¹zku z tym zdarza siê, ¿e bot nie wykorzysta swojej okazji do zwyciêstwa od razu, jeœli ma wiele opcji wygranej, a g³êbokoœæ jest wiêksza od 2.
+Bot ,,wie'' wówczas, ¿e i tak zd¹¿y wygraæ, w zwi¹zku z czym losuje swój nastêpny ruch (z wy³¹czeniem ruchów, po których przeciwnik mo¿e sprz¹tn¹æ mu zwyciêstwo sprzed nosa).
+Analogicznie dzia³a to dla bota przegrywaj¹cego, któremu zdarza siê ,,pozwoliæ'' przeciwnikowi wygraæ w najprostszy sposób, w momencie, gdy g³êbokoœæ przeszukiwania pozwala mu dostrzec, ¿e przegra niezale¿nie od swoich dzia³añ.
+Innym ³atwo dostrzegalnym aspektem jest zdecydowanie mniejsza liczba remisów przy nieparzystej (3 remisy na przestrzeni wszystkich eksperymentów) ni¿ przy parzystej (œrednio \num{9,25} remisów na eksperyment sk³adaj¹cy siê z 25 uruchomieñ programu przy okreœlonej g³êbokoœci) mierze g³êbokoœci przeszukiwania.
+Wynika to z faktu, ¿e wówczas liœæ stanowi rezultat gracza aktualnie ruszaj¹cego siê, zaœ przy parzystej liczbie - przeciwnika.
+Wobec tego, przy parzystej g³êbokoœci przeszukiwania algorytm bardziej ,,skupia siê'' na blokowaniu przeciwnika, ni¿ na w³asnym zwyciêstwie, co przek³ada siê na wiêksz¹ liczbê remisów.
+Wiêkszy procent wygranych gracza maksymalizuj¹cego wynika z faktu, ¿e ów gracz zawsze zaczyna³, co z automatu daje przewagê.
+
+\section{Wersja bez obcinania $\alpha$ - $\beta$}
+W wersji bez obcinania algorytm bardzo skutecznie radzi³ sobie z rozgrywk¹, dziêki czemu czêsto zachodzi³y remisy, a gdy któryœ z botów wygrywa³, to wynika³o to z ,,przyparcia do muru'' drugiego gracza, tj. zwyciêzca mia³ co najmniej dwie opcje wygranej.
+
+\section{Wersja z obcinaniem $\alpha$ - $\beta$}
+Wersja z obcinaniem $\alpha$ - $\beta$ dzia³a niemal identycznie jak podstawowa wersja algorytmu minimax, jednak jest szybsza, gdy¿ nie rozwa¿a ga³êzi, na których przeciwnik ma korzystniejszy ruch ni¿ aktualnie ruszaj¹cy siê gracz.
 
 \section{Wnioski}
+Algorytm dobrze radzi sobie z gr¹ w Connect 4, jednak w pojedynku dwóch takich samych botów nie zawsze to widaæ.
+Eksponuje równie¿ wady samej gry, która daje przewagê graczowi zaczynaj¹cemu.

@@ -45,7 +45,7 @@ def count_horizontal(node, col, row):
     return left+right-2
 
 def count_vertical(node, col, row):
-    top = len(node.fields[col]) - row
+    top = len(node.fields[col]) - row -1
     if top > 3:
         top = 3
     bottom = 0
@@ -127,49 +127,56 @@ def count_height(column): # do liczenia wysokosci pionka - UWAGA - liczone od 0
     return suma - 1
 
 
-def heuristic_val(node, maximizingPlayer, move, max_turn):
+def heuristic_val(node, maximizingPlayer, move, max_turn, depth):
     # print("PROBUJE")
     # print(node)
     if node.get_winner() is not None:
         if node.get_winner().char == "1":
-            # print("pog, wygram ja, max")
-            return 5000
-        # print("pog, wygram ja, jarzabek")
-        return -5000
-    # count_possible(node, move)
+            # print("pog, wygram ja, max", 5000)
+            return 5000 #+count_possible(node, move)
+        # print("pog, wygram ja, jarzabek", -5000)
+        return -5000 #-count_possible(node, move)
+    # print("mozliwe: ", count_possible(node, move))
     if max_turn:
         return count_possible(node, move)
     else:
         return -count_possible(node, move)
 
-def is_terminal(node): #
+def is_terminal(node):
     return node.is_finished()
 
+def is_full(node):
+    for column in node.fields:
+        for field in column:
+            if field == None:
+                return False
+    return True
+
 def alpha_beta(board, depth , a , b , maximizingPlayer, max_turn, game, move=None): # Board jest typu ConnectFourState
-    if depth == 0 or is_terminal(board):
-        if depth == 0:
-            return heuristic_val(board, maximizingPlayer, move, not max_turn), None # not max_turn żeby nie zmieniało nam tury na liściach
-        return heuristic_val(board, maximizingPlayer, move, not max_turn), None
+    if depth == 0 or is_terminal(board) or is_full(board):
+        if is_terminal(board):
+            # print("tududuuu")
+            return heuristic_val(board, maximizingPlayer, move, not max_turn, depth), move
+        return heuristic_val(board, maximizingPlayer, move, not max_turn, depth), move # not max_turn żeby nie zmieniało nam tury na liściach
     moves = board.get_moves()
-    best_moves = [None]
+    best_moves = []
     if max_turn:
         value = -inf
         for move in moves:
             boardcopy = copy.deepcopy(board)
             boardcopy = boardcopy.make_move(move)
             alpbet = alpha_beta(boardcopy , depth-1 , a , b , maximizingPlayer, not max_turn, game, move)[0]
-            # print("niby turn maxima", alpbet)
             if alpbet > value:
                 best_moves = [move]
-                # print(move.column, depth)
-                # print("alpbet > value")
-                # print(alpbet, value)
             elif alpbet == value:
                 best_moves.append(move)
             value = max (value, alpbet)
-            # a = max(a, value)
-            if value >= b:
+
+            # comment for regular minimax
+            a = max(a, value)
+            if value > b:
                 break #( * b c u t o f f * )
+
         return value, random.choice(best_moves)
     else:
         value = inf
@@ -177,26 +184,25 @@ def alpha_beta(board, depth , a , b , maximizingPlayer, max_turn, game, move=Non
             boardcopy = copy.deepcopy(board)
             boardcopy = boardcopy.make_move(move)
             alpbet = alpha_beta( boardcopy , depth-1 , a , b , maximizingPlayer, not max_turn, game, move)[0]
-            # print("niby turn minima", alpbet)
             if alpbet < value:
                 best_moves = [move]
-                # print(move.column)
-                # print("alpbet < value")
-                # print(alpbet, value)
             elif alpbet == value:
                 best_moves.append(move)
             value = min (value, alpbet)
-            # b = min ( b , value)
-            if value <= a:
+
+            # comment for regular minimax
+            b = min ( b , value)
+            if value < a:
                 break #( * a c u t o f f * )
+
         return value, random.choice(best_moves)
 
 
 if __name__ == "__main__":
     game = ConnectFour()
-    depth = 3
-    a = -5001
-    b = 5001
+    depth = 5
+    a = -inf
+    b = inf
     max_turn = True # true => max zaczyna
     # node, maximizingPlayer
     isEnded = False
@@ -216,7 +222,7 @@ if __name__ == "__main__":
             game.state = game.state.make_move(move)
             print("-----------\nUWAGA NOWY RUCH\n-------------")
             print(game.state)
-            print("Heurystyka: poziomo: " + str(count_horizontal(game.state, move.column, count_height(game.state.fields[move.column]))) + " + pionowo: " + str(count_vertical(game.state, move.column, count_height(game.state.fields[move.column]))) + " + ukosnie: " + str(count_diagonal(game.state, move.column, count_height(game.state.fields[move.column]))) + " = " + str(heuristic_val(game.state, maximizingPlayer, move, max_turn)))
+            print("Heurystyka: poziomo: " + str(count_horizontal(game.state, move.column, count_height(game.state.fields[move.column]))) + " + pionowo: " + str(count_vertical(game.state, move.column, count_height(game.state.fields[move.column]))) + " + ukosnie: " + str(count_diagonal(game.state, move.column, count_height(game.state.fields[move.column]))) + " = " + str(heuristic_val(game.state, maximizingPlayer, move, max_turn, 0)))
             max_turn = not max_turn
             # isEnded = True
             isEnded = game.state.is_finished()
