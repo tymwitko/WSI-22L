@@ -1,0 +1,27 @@
+% !TEX encoding = cp1250
+
+
+\chapter{Æwiczenie}
+
+\section{Eksperymenty}
+Eksperymenty w niniejszym æwiczeniu laboratoryjnym polega³y na 25-krotnym uruchamianiu programu, który uruchamia³ algorytm ID3 dziesiêciokrotnie i na tej podstawie znajdowa³ optymaln¹ g³êbokoœæ dla wylosowanego zestawu danych. Dane by³y dzielone w proporcji 95:95:96.
+
+\section{Œrodowisko - dane o raku piersi}
+Danymi dostarczonymi algorytmowi by³y dane o raku piersi i cechach pacjentek. Dane zosta³y zaczerpniête z \url{https://archive.ics.uci.edu/ml/datasets/breast+cancer}.
+
+\section{Wyniki}
+
+Na wykresie \ref{wykres} zosta³y przedstawione uœrednione wyniki z 25 uruchomieñ programu, z których ka¿de dostarczy³o po jednej wartoœci dla ka¿dej g³êbokoœci dla ka¿dego zbioru.
+
+\begin{figure}
+\includegraphics[scale=0.6]{img/wykres}
+\caption{Wykres przedstawiaj¹cy uœrednione wyniki dla wszystkich g³êbokoœci}
+\label{wykres}
+\end{figure}
+
+\section{Analiza wyników}
+£atwo zauwa¿yæ, ¿e miêdzy g³êbokoœci¹ 3 a 4 na zbiorze walidacyjnym obserwujemy maksimum skutecznoœci algorytmu. Na dalszych odcinkach mamy bowiem do czynienia z przeuczeniem, co skutkuje obni¿eniem skutecznoœci na wszystkich zbiorach oprócz ucz¹cego.
+
+\section{Wnioski}
+Algorytm doœæ dobrze radzi sobie z postawionym zadaniem, jednak przy takim zestawie danych, gdzie zachodzi wyraŸna dominacja jednego wyniku, mo¿e zachodziæ tendencja do ,,upraszczania'' zadania przez algorytm, czyli dobierania g³êbokoœci równej 0.
+Wówczas algorytm stwierdza, ¿e op³aca mu siê zawsze mówiæ, ¿e pacjentka nie ma raka, gdy¿ zdecydowana wiêkszoœæ pacjentek go nie ma.
