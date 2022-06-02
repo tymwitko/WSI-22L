@@ -5,7 +5,6 @@ import random
 import copy
 from cmath import inf
 
-# https://towardsdatascience.com/reinforcement-learning-and-q-learning-an-example-of-the-taxi-problem-in-python-d8fd258d6d45
 def q_learning(rate, gamma, explor, states_num, actions_num, iters, envi, state):
     q = np.zeros([states_num, actions_num]) #500, 6
     best_seq = []
@@ -46,7 +45,6 @@ if __name__ == "__main__":
     iterations = 25
     cwiczenia = True
 
-    # Q, stats, solution = qLearning(env, 1000)
     if cwiczenia:
         for i in range(iterations):
             observation = env.reset()
@@ -70,10 +68,7 @@ if __name__ == "__main__":
                     # print(env.render(mode='ansi'))
                     solution, rew = q_learning(i, j, 0.2, 500, 6, 500, copy.deepcopy(env), observation) 
             print(i, j, rew)
-
-    # if done:
-    #     observation, info = env.reset(return_info=True)
-    # env.close()
+    env.close()
 
     # There are 6 discrete deterministic actions:
     # - 0: move south
