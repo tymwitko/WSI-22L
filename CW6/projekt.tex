@@ -16,11 +16,32 @@ W dostarczonym œrodowisku taksówka mia³a za zadanie przewoziæ pasa¿erów miêdzy 2
 Taksówka ma mo¿liwoœæ wykonywania ruchów nieprawid³owych, np. wje¿d¿ania w œcianê albo pobieranie pasa¿erów tam, gdzie ich nie ma.
 
 \section{Eksperymenty}
-%TODO - jakie zrobiæ? Wszystkie parametry?
+Eksperymentom poddane zosta³y parametry learning rate, $\gamma$ oraz prawdopodobieñstwa wybrania losowej polityki.
+Z uwagi na skoñczonoœæ czasu ludzkiego ¿ycia zbiór wartoœci zosta³ ograniczony do $[\num{0,33}, \num{0,67}, 1]$.
+Liczba pokoleñ by³a w ka¿dym eksperymencie jednakowa i wynosi³a 500.
+Rezultatem eksperymentów by³y œrednie z 25 uruchomieñ algorytmu dla danych wartoœci.
+Dla uczciwoœci eksperymentów scenariusze œrodowiska zosta³y powtórzone dla wszystkich eksperymentów, czyli by³o 25 ró¿nych œrodowisk, powtórzonych dla wszystkich parametrów.
 
 \section{Wyniki}
+Na trójwymiarowym wykresie \ref{full} zosta³y przedstawione wyniki 27 eksperymentów.
+Na osi x (czerwonej) znajduje siê parametr learning rate, oœ y (zielona) symbolizuje parametr $\gamma$, czerwona - œredni wynik z 25 uruchomieñ algorytmu, zaœ prawdopodobieñstwo wyboru losowej polityki zosta³o, z uwagi na trudnoœæ wizualizacji 4-wymiarowego wykresu, przedstawione za pomoc¹ kolorów - niebieski to \num{0,33}, czerwony to \num{0,67}, zaœ zielony oznacza 1.
+
+\begin{figure}
+\includegraphics[scale=0.6]{img/full}
+\caption{Wykres przedstawiaj¹cy uœrednione wyniki dla wszystkich kombinacji parametrówi}
+\label{full}
+\end{figure}
+
 
 \section{Analiza wyników}
+£atwo zauwa¿yæ, ¿e wraz z obni¿onym prawdopodobieñstwem wyraŸnie wzrasta œrednia wyników.
+Pozosta³e parametry, w porównaniu do prawdopodobieñstwa, minimalnie wp³ywaj¹ na rezultat, jednak widocznym maksimum jest punkt symbolizuj¹cy learning rate równe 1, $\gamma$ równe \num{0,33} oraz prawdopodobieñstwo równe \num{0,33}. Z uwagi na silny wp³yw prawdopodobieñstwa na wynik, zosta³y przeprowadzone dodatkowe eksperymenty dla prawdopodobieñstw 0, \num{0,1} oraz \num{0,2}, aby dodatkowo sprawdziæ, czy regu³a ,,im mniejsze prawdopodobieñstwo, tym lepiej'' jest uniwersalna. Prawdopodobieñstwo równe 0 spowodowoa³o znaczny skok w wartoœci wyników, co widaæ na wykresie \ref{best}, co sygnalizuje, ¿e w tym problemie algorytm zach³anny spisuje siê bardzo dobrze.
+
+\begin{figure}
+\includegraphics[scale=1]{img/best}
+\caption{Wykres przedstawiaj¹cy uœrednione wyniki dla wybranej kombinacji parametrów ze zmiennym prawdopodobieñstwem wyboru losowej polityki}
+\label{best}
+\end{figure}
 
 \section{Wnioski}
-Algorytm, jeœli zostanie nauczony wystarczaj¹co du¿¹ liczb¹ iteracji, radzi sobie dobrze z postawionym zadaniem, aczkolwiek zdarzaj¹ mu siê ,,g³upie'' b³êdy, tzn. wje¿d¿anie w œcianê, wysadzanie pasa¿era poza wyznaczonymi strefami, czy wracanie po w³asnych œladach.
+Algorytm, jeœli zostanie nauczony wystarczaj¹co du¿¹ liczb¹ iteracji, radzi sobie dobrze z postawionym zadaniem, aczkolwiek zdarzaj¹ mu siê ,,g³upie'' b³êdy, tzn. wje¿d¿anie w œcianê, wysadzanie pasa¿era poza wyznaczonymi strefami, czy wracanie po w³asnych œladach. Ten problem zostaje zlikwidowany przy zastosowaniiu algorytmu zach³annego.

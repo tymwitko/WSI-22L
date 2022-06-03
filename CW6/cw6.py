@@ -1,3 +1,5 @@
+# Tymon Kobylecki WSI 22L
+
 import gym
 import time
 import numpy as np
@@ -42,13 +44,12 @@ def get_action(explor, env, q, state):
 
 if __name__ == "__main__":
     env = gym.make('Taxi-v3')
-    # solution = [1, 1, 1, 4, 3, 3, 0, 0, 3, 3, 0, 0, 5, 4, 1, 1, 1, 0, 0, 0, 5, 1, 1, 1]
-    iterations = 3
-    cwiczenia = True
-
+    iterations = 25
+    cwiczenia = True # czy ma być uruchomiona wizualizacja, czy eksperymenty
+    seeds = range(0, 25)
     if cwiczenia:
         for i in range(iterations):
-            observation = env.reset()
+            observation = env.reset(seed=seeds[i])
             print(env.render(mode='ansi'))
             solution, rew = q_learning(0.2, 0.5, 0.2, 500, 6, 500, env, observation)        
             for ind, action in enumerate(solution):
@@ -56,19 +57,21 @@ if __name__ == "__main__":
                 observation, reward, done, info = env.step(action)
                 print(env.render(mode='ansi'))
                 time.sleep(0.5)
-                # print(list(env.decode(observation)), reward, done, info) # decoded observation - (taxi_row, taxi_col, passenger_location (RGYB, taxi), destination (RGYB))
                 if done:
                     env.reset()
             print("Total reward:", rew)
     else:
-        for i in range(10):
-            i = float(i+1)/10
-            for j in range(10):
-                for i in range(iterations):
-                    observation = env.reset()
-                    # print(env.render(mode='ansi'))
-                    solution, rew = q_learning(i, j, 0.2, 500, 6, 500, env, observation) 
-            print(i, j, rew)
+        tested = [0.33, 0.67, 1.0]
+        for i in tested: # learning rate
+            for j in tested: # gamma
+                for k in tested: # explor
+                    av_sum = 0
+                    for l in range(iterations):
+                        observation = env.reset(seed=seeds[l])
+                        solution, rew = q_learning(i, j, k, 500, 6, 500, env, observation) 
+                        av_sum += rew
+                    avg = av_sum/iterations
+                    print(i, j, k, "dają", avg)
     env.close()
 
     # There are 6 discrete deterministic actions:
