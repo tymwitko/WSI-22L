@@ -10,7 +10,7 @@ def q_learning(rate, gamma, explor, states_num, actions_num, iters, envi, state)
     best_seq = []
 
     for i in range(iters):
-        print(' ', str(round(i*100/iters, 2)) + '%', end='\r')
+        print(" ", str(round(i*100/iters, 2)) + "%", end='\r')
         sequence = []
         reward_sum = 0
         best_reward = -inf
@@ -20,7 +20,7 @@ def q_learning(rate, gamma, explor, states_num, actions_num, iters, envi, state)
             action = get_action(explor, env, q, state)
             sequence.append(action)
 
-            new_state, rt, done, info = env.step(action)
+            new_state, rt, done, _ = env.step(action)
             reward_sum += rt
             q[state, action] = q[state, action] + rate * (rt + gamma * np.max(q[new_state]) - q[state, action])
             state = new_state
@@ -28,6 +28,7 @@ def q_learning(rate, gamma, explor, states_num, actions_num, iters, envi, state)
         if best_reward == -inf or reward_sum > best_reward:
             best_seq = copy.deepcopy(sequence)
             best_reward = reward_sum
+    print(" 100%  ")
 
     return best_seq, best_reward
 
@@ -42,14 +43,14 @@ def get_action(explor, env, q, state):
 if __name__ == "__main__":
     env = gym.make('Taxi-v3')
     # solution = [1, 1, 1, 4, 3, 3, 0, 0, 3, 3, 0, 0, 5, 4, 1, 1, 1, 0, 0, 0, 5, 1, 1, 1]
-    iterations = 25
+    iterations = 3
     cwiczenia = True
 
     if cwiczenia:
         for i in range(iterations):
             observation = env.reset()
             print(env.render(mode='ansi'))
-            solution, rew = q_learning(0.2, 0.5, 0.2, 500, 500, 6, copy.deepcopy(env), observation)        
+            solution, rew = q_learning(0.2, 0.5, 0.2, 500, 6, 500, env, observation)        
             for ind, action in enumerate(solution):
                 print("step:", ind+1, "/", len(solution))
                 observation, reward, done, info = env.step(action)
@@ -66,7 +67,7 @@ if __name__ == "__main__":
                 for i in range(iterations):
                     observation = env.reset()
                     # print(env.render(mode='ansi'))
-                    solution, rew = q_learning(i, j, 0.2, 500, 6, 500, copy.deepcopy(env), observation) 
+                    solution, rew = q_learning(i, j, 0.2, 500, 6, 500, env, observation) 
             print(i, j, rew)
     env.close()
 
