@@ -3,6 +3,9 @@ import numpy as np
 import math
 
 def import_data():
+    '''
+    import iris data from sklearn datasets
+    '''
     data = datasets.load_iris()['data']
     target = datasets.load_iris()['target']
     return data, target
@@ -14,9 +17,26 @@ def split(data, split):
     np.random.shuffle(data)
     return data[:split, :], data[split:, :]
 
-def sum_avg_dev(data):
+def ksplit(data, k):
     '''
-    sums up averages and standard deviations for each attribute
+    split data into k equal (or almost equal) subsets
+    '''
+    np.random.shuffle(data)
+    indices = []
+    subsets = []
+    for i in range(k):
+        indices.append(len(data/k) * (i+1))
+    # subsets = np.split(data, indices)
+    for i in range(k):
+        print(i*(len(data)/k), (i+1)*len(data)/k)
+        print(data[int(i*(len(data)/k)):int((i+1)*len(data)/k), :])
+        subsets.append(data[int(i*(len(data)/k)):int((i+1)*len(data)/k), :])
+    print(np.shape(subsets))
+    return subsets
+
+def avg_dev(data):
+    '''
+    returns averages and standard deviations for each attribute
     '''
     sums = []
     for attr in zip(*data):
@@ -32,68 +52,78 @@ def sum_avg_dev(data):
     sums = sums[:-1]
     return sums
 
-def get_class_sums(data):
+def get_class_avg_dev(data):
     '''
     sums of averages and standard deviations for each class
     '''
     filtered = {}
-    sums = {}
+    avgdevs = {}
     for i in (data):
         if (i[-1] not in filtered):
             filtered[i[-1]] = []
         filtered[i[-1]].append(i)
     for classValue, instances in filtered.items():
-        sums[classValue] = sum_avg_dev(instances)
-    return sums
+        avgdevs[classValue] = avg_dev(instances)
+    # print(avgdevs)
+    return avgdevs
 
-def prob(x, summar):
+def prob(x, avgdev):
     '''
     probability for given class from vector with gauss distribution
     x - parameter value from given vector
-    summar - parameter average and deviation
+    avgdev - parameter average and deviation
     '''
-    avg = summar[0]
-    dev = summar[1]
+    avg = avgdev[0]
+    dev = avgdev[1]
     try:
         return math.exp((-(x-avg)**2)/(2*(dev**2))) / (math.sqrt(2*math.pi) * dev)
     except ZeroDivisionError:
         return 1
 
-def run_tests(sums, testSet):
+def run_tests(avgdevs, test):
     '''
     run tests, duh
+    returns list of guesses for each vector in test set
     '''
-    predictions = []
+    # print(avgdevs)
+    preds = []
     for i in test:
-        result = guess(sums, i)
-        predictions.append(result)
-    return predictions
+        result = guess(avgdevs, i)
+        preds.append(result)
+    return preds
 
-def guess(sums, vector):
+def guess(avgdevs, vector):
     '''
     run alg for single vector
     '''
-    probabilities = get_probs(sums, vector)
-    bestLabel = None
-    bestProb = -1
-    for classValue, probability in probabilities.items():
-        if bestLabel is None or probability > bestProb:
-            bestProb = probability
-            bestLabel = classValue
-    return bestLabel
+    best_class = None
+    best_prob = -1
+    for class_guess, probab in get_probs(avgdevs, vector).items():
+        if best_prob == -1 or probab > best_prob:
+            best_prob = probab
+            best_class = class_guess
+    return best_class
 
-def get_probs(sums, vector):
+def get_probs(avgdevs, vector):
     '''
     returns probabilities for each class for given vector
+    avgdevs - average and deviation for each parameter
     '''
-    # print(vector)
     probs = {}
-    for param_num, param_sums in sums.items():
+    for param_num, param_ad in avgdevs.items():
         probs[param_num] = 1
-        for ind, summar in enumerate(param_sums):
-            # print(vector, vector[ind], param_sums)
+        for ind, summar in enumerate(param_ad):
+            # print(vector, vector[ind], param_ad)
             probs[param_num] *= prob(vector[ind], summar)
     return probs
+
+def k_test_set(subsets, selected):
+    out = []
+    for ind, element in enumerate(subsets):
+        if ind != selected:
+            for row in element:
+                out.append(row)
+    return out
 
 if __name__ == "__main__":
     data, target = import_data()
@@ -104,16 +134,40 @@ if __name__ == "__main__":
         full_data.append(temp)
     full_data = np.array(full_data)
     
+    # tests = full_data[:8, :]
+    # print("tests:",tests)
+    # # ksplit(tests, 3)
+    # print("k", ksplit(tests, 3))
 
-    for k in range(1, 150):
+    # for k in range(1, 150):
+    #     sm = 0
+    #     for j in range(25):
+    #         learn, test = split(full_data, k)
+    #         guesses = run_tests(get_class_avg_dev(learn), test)
+    #         git = 0
+    #         for ind, i in enumerate(test):
+    #             if i[-1] == guesses[ind]:
+    #                 git += 1
+    #         sm += (git/float(len(test))) * 100.0
+        # print("Learning set size:", k, "Correct guesses:", sm/25, "%")
+    
+    for k in range (2, 4):
         sm = 0
-        for j in range(25):
-            learn, test = split(full_data, k)
-            guesses = run_tests(get_class_sums(learn), test)
-            git = 0
-            for ind, i in enumerate(test):
-                if i[-1] == guesses[ind]:
-                    git += 1
-            sm += (git/float(len(test))) * 100.0
-        print(k, sm/25)
-            # print("Correct guesses:", (git/float(len(test))) * 100.0, "%")
+        subsets = ksplit(full_data, k)
+        for m in range(k):
+            learn = subsets[m]
+            test = k_test_set(subsets, m)
+            print(np.shape(test), np.shape(learn), np.shape(subsets))
+            for j in range(25):
+                # print(m, learn, "bla", test)
+                guesses = run_tests(get_class_avg_dev(learn), test)
+                git = 0
+                niegit = 0
+                for ind, i in enumerate(test):
+                    if i[-1] == guesses[ind]:
+                        git += 1
+                    else:
+                        niegit += 1
+                print("wyniki:", git, niegit)
+            # sm += (git/(git + niegit)) * 100.0
+        # print("Number of sets:", k, "Correct guesses:", sm/25, "%")
