@@ -10,9 +10,10 @@ Podczas wszelkich eksperymentów dane podzielone by³y na zbiór ucz¹cy oraz testow
 
 \section{Eksperymenty}
 Jedynym parametrem poddanym eksperymentom by³a wielkoœæ zbioru testowego, zmieniana w zakresie od 1 do 149, co oznacza³o zmianê liczebnoœci zbioru testowego odpowiednio od 149 do 1.
+W przypadku walidacji krzy¿owej modyfikowana by³a krotnoœæ walidacji, w zakresie od 2 do 10 podzbiorów.
 
 \section{Wyniki}
-% TODO
+Na wykresie \ref{wyniki} widoczna jest skutecznoœæ algorytmu w zale¿noœci od liczebnoœci zbioru ucz¹cego, zaœ na wykresie \ref{wyniki_cross} przedstawiono wyniki walidacji krzy¿owej dla ró¿nej wartoœci krotnoœci.
 
 \begin{figure}
 \includegraphics[scale=1]{wykres}
@@ -20,9 +21,18 @@ Jedynym parametrem poddanym eksperymentom by³a wielkoœæ zbioru testowego, zmieni
 \label{wyniki}
 \end{figure}
 
-\section{Analiza wyników}
-% TODO
+\begin{figure}
+\includegraphics[scale=1]{wykres_cross}
+\caption{Wykres przedstawiaj¹cy uœrednione wyniki dla wszystkich krotnoœci walidacji krzy¿owej}
+\label{wyniki_cross}
+\end{figure}
 
+\section{Analiza wyników}
+£atwo zauwa¿yæ, ¿e przy podziale na zbiór ucz¹cy i testowy, nie warto zwiêkszaæ liczebnoœci zbioru ucz¹cego powy¿ej 40, gdy¿ dalsze wyniki nie s¹ istotnie odmienne.
+W przypadku podzia³u przy pomocy k-krotnej walidacji krzy¿owej równie¿ widaæ tendencjê spadkow¹, gdy zwiêkszany jest parametr k (a zarazem zmniejszany jest zbiór ucz¹cy).
+Wynika to w prosty sposób z niedouczenia algorytmu, który mo¿e czasem nawet ,,nie poznaæ'' pewnej klasy w swoim zbiorze ucz¹cym.
 
 \section{Wnioski}
-% TODO
+Po zastosowaniu odpowiedniej liczebnoœci zbioru ucz¹cego algorytm bardzo dobrze rozwi¹zuje postawione zadanie, osi¹gaj¹c skutecznoœæ niekiedy przekraczaj¹c¹ 95\%.
+Warto zauwa¿yæ, ¿e s¹ to wyniki istotnie lepsze, ni¿ w przypadku zastosowania algorytmu ID3 w æwiczeniu 4, który osi¹ga³ skutecznoœæ na poziomie 70-80\%.
+Nale¿y jednak zaznaczyæ, ¿e nie dzia³a³y one na tym samym zbiorze danych.

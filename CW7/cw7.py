@@ -1,3 +1,4 @@
+# Tymon Kobylecki WSI 22L
 from sklearn import datasets
 import numpy as np
 import math
@@ -28,10 +29,10 @@ def ksplit(data, k):
         indices.append(len(data/k) * (i+1))
     # subsets = np.split(data, indices)
     for i in range(k):
-        print(i*(len(data)/k), (i+1)*len(data)/k)
-        print(data[int(i*(len(data)/k)):int((i+1)*len(data)/k), :])
+        # print(i*(len(data)/k), (i+1)*len(data)/k)
+        # print(data[int(i*(len(data)/k)):int((i+1)*len(data)/k), :])
         subsets.append(data[int(i*(len(data)/k)):int((i+1)*len(data)/k), :])
-    print(np.shape(subsets))
+    # print(np.shape(subsets))
     return subsets
 
 def avg_dev(data):
@@ -126,6 +127,7 @@ def k_test_set(subsets, selected):
     return out
 
 if __name__ == "__main__":
+    cross = False # cross validation or regular learn-test division
     data, target = import_data()
     full_data = []
     for ind, i in enumerate(data):
@@ -133,41 +135,32 @@ if __name__ == "__main__":
         temp.append(target[ind])
         full_data.append(temp)
     full_data = np.array(full_data)
-    
-    # tests = full_data[:8, :]
-    # print("tests:",tests)
-    # # ksplit(tests, 3)
-    # print("k", ksplit(tests, 3))
 
-    # for k in range(1, 150):
-    #     sm = 0
-    #     for j in range(25):
-    #         learn, test = split(full_data, k)
-    #         guesses = run_tests(get_class_avg_dev(learn), test)
-    #         git = 0
-    #         for ind, i in enumerate(test):
-    #             if i[-1] == guesses[ind]:
-    #                 git += 1
-    #         sm += (git/float(len(test))) * 100.0
-        # print("Learning set size:", k, "Correct guesses:", sm/25, "%")
-    
-    for k in range (2, 4):
-        sm = 0
-        subsets = ksplit(full_data, k)
-        for m in range(k):
-            learn = subsets[m]
-            test = k_test_set(subsets, m)
-            print(np.shape(test), np.shape(learn), np.shape(subsets))
+    if not cross:
+        for k in range(1, 150):
+            sm = 0
             for j in range(25):
-                # print(m, learn, "bla", test)
+                learn, test = split(full_data, k)
                 guesses = run_tests(get_class_avg_dev(learn), test)
                 git = 0
-                niegit = 0
+                for ind, i in enumerate(test):
+                    if i[-1] == guesses[ind]:
+                        git += 1
+                sm += (git/float(len(test))) * 100.0
+            print("Learning set size:", k, "Correct guesses:", sm/25, "%")
+    else:
+        for k in range (2, 11):
+            git = 0
+            niegit = 0
+            sm = 0
+            subsets = ksplit(full_data, k)
+            for m in range(k):
+                learn = subsets[m]
+                test = k_test_set(subsets, m)
+                guesses = run_tests(get_class_avg_dev(learn), test)
                 for ind, i in enumerate(test):
                     if i[-1] == guesses[ind]:
                         git += 1
                     else:
                         niegit += 1
-                print("wyniki:", git, niegit)
-            # sm += (git/(git + niegit)) * 100.0
-        # print("Number of sets:", k, "Correct guesses:", sm/25, "%")
+            print("Number of sets:", k, "Correct guesses:", git/(git+niegit) * 100, "%")
